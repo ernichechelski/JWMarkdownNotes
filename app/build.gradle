@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
-
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.support:support-annotations:25.0.1'
+    }
+}
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -83,7 +87,8 @@ dependencies {
 
     //Ui components dependencies
     //Ultimate recycler view
-    compile 'com.marshalchen.ultimaterecyclerview:library:0.7.3'
+
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
     //Showcase view. Tutorial at start
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
     //Fillable loader
