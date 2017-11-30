@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -18,19 +19,33 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'  // butterknife
+        exclude 'META-INF/LICENSE-LGPL-2.1.txt'
+        exclude 'META-INF/LICENSE-LGPL-3.txt'
+        exclude 'META-INF/LICENSE-W3C-TEST'
+        exclude 'META-INF/DEPENDECIES/pdfbox-2.0.4.jar'
+        exclude 'META-INF/DEPENDECIES/fontbox-2.0.4.jar'
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
     }
 }
 
 repositories {
     maven {url "https://clojars.org/repo/"}
+    jcenter()
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     //Added dependencies: https://github.com/codepath/android_guides/wiki/Must-Have-Libraries
@@ -59,5 +74,22 @@ dependencies {
     //Android annotations
     annotationProcessor "org.androidannotations:androidannotations:4.4.0"
     compile "org.androidannotations:androidannotations-api:4.4.0"
+    //Flexmark
+    compile 'com.vladsch.flexmark:flexmark-all:0.28.12'
+    //Persistance
+    //Sugar ORM
+    compile 'com.github.satyan:sugar:1.3'
+
+
+    //Ui components dependencies
+    //Ultimate recycler view
+    compile 'com.marshalchen.ultimaterecyclerview:library:0.7.3'
+    //Showcase view. Tutorial at start
+    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
+    //Fillable loader
+    compile 'com.mikhaellopez:circularfillableloaders:1.2.0'
+    //Intro activities
+    compile 'agency.tango.android:material-intro-screen:0.0.5'
+
 
 }
