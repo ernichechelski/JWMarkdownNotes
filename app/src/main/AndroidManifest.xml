@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         tools:replace="android:icon"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
