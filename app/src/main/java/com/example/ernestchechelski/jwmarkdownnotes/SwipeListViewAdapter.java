@@ -24,6 +24,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.daimajia.swipe.util.Attributes;
 
+import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import java.util.List;
@@ -44,6 +45,9 @@ public class SwipeListViewAdapter extends BaseSwipeAdapter {
         this.parentListView = parentListView;
         this.parentListView.setAdapter(this);
         this.setMode(Attributes.Mode.Multiple);
+
+        initItems(items);
+
         this.parentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,6 +96,13 @@ public class SwipeListViewAdapter extends BaseSwipeAdapter {
         });
     }
 
+    private void initItems(List<MenuItem> items) {
+        for(MenuItem item:items){
+            item.init(this);
+            initItems(item.getChildren());
+        }
+    }
+
 
     private void goToActivity(Activity activityClass, MenuItem menuItem){
         Intent intent = new Intent(this.mContext, activityClass.getClass());
@@ -103,35 +114,21 @@ public class SwipeListViewAdapter extends BaseSwipeAdapter {
 
     @Override
     public int getSwipeLayoutResourceId(int position) {
-        return R.id.swipe;
+        return items.get(position).innerResourceId;
     }
 
 
 
     @Override
     public View generateView(int position, ViewGroup parent) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.simple_note_item, null);
+        final MenuItem item = getItem(position);
+        View v = LayoutInflater.from(mContext).inflate(item.outerResourceId, null);
         SwipeLayout swipeLayout = (SwipeLayout)v.findViewById(getSwipeLayoutResourceId(position));
 
-        final MenuItem item = getItem(position);
-        //swipeLayout.addDrag(SwipeLayout.DragEdge.t, v.findViewById(R.id.swipe));
-        swipeLayout.addSwipeListener(new SimpleSwipeListener() {
-            @Override
-            public void onOpen(SwipeLayout layout) {
-              
-            }
-        });
 
-        Button button = v.findViewById(R.id.swipe_single_action_button);
-        button.setText(item.getName());
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToActivity(parentActivity,item);
-                Toast.makeText(mContext, "click delete", Toast.LENGTH_SHORT).show();
-            }
-        });
-        return v;
+        //swipeLayout.addDrag(SwipeLayout.DragEdge.t, v.findViewById(R.id.swipe));
+
+        return item.handler.onGenerateView(swipeLayout,v,item);
     }
 
     @Override

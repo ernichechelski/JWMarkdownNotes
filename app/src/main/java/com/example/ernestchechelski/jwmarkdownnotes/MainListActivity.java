@@ -8,14 +8,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.util.Attributes;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,9 +32,7 @@ public class MainListActivity extends AppCompatActivity {
     @BindView(R.id.notes_list_view)
     ListView mListView;
 
-
     SwipeListViewAdapter mAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,26 +40,37 @@ public class MainListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        MenuItem user = (MenuItem) Parcels.unwrap(getIntent().getParcelableExtra(INTENT_KEY));
-        if(user != null){
-            mAdapter = new SwipeListViewAdapter(this,
-                   user.getChildren(),
-                    this,mListView);
-        } else {
+
+            List<MenuItem> items = new ArrayList();
+            items.add(new MenuItem("First", R.id.swipe, R.layout.simple_note_item, new MenuItemInterface() {
+                @Override
+                public View onGenerateView(SwipeLayout itemLayout, View v, MenuItem item) {
+                    itemLayout.addSwipeListener(new SimpleSwipeListener() {
+                        @Override
+                        public void onOpen(SwipeLayout layout) {
+
+                        }
+                    });
+
+                    Button button = v.findViewById(R.id.swipe_single_action_button);
+                    button.setText(item.getName());
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            //goToActivity(parentActivity,item);
+                            Toast.makeText(getApplicationContext(), "click delete", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    return v;
+                }
+            }));
 
 
+            mAdapter = new SwipeListViewAdapter(this,items,this,mListView);
 
-
-            mAdapter = new SwipeListViewAdapter(this,
-                    Arrays.asList(
-                            new MenuItem("Action first", Arrays.asList(
-                                    new MenuItem("Action third"),
-                                    new MenuItem("Action fourth"))),
-                            new MenuItem("Action second")),
-                    this,mListView);
-        }
 
 
     }
-
 }
